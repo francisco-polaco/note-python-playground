@@ -1,4 +1,4 @@
-from flask import Flask, request, json
+from flask import Flask, request, json, Response
 
 import src.data.database as db
 from src.data.model import Note
@@ -33,7 +33,9 @@ def get_note():
     if note is None:
         return f"Note with id '{id_parameter}' not found.", 404
     else:
-        return json.dumps(note.to_dict())
+        return Response(response=json.dumps(note.to_dict()),
+                        status=200,
+                        mimetype="application/json")
 
 
 @app.route('/api/delete')
