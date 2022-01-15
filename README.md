@@ -1,6 +1,8 @@
-# Note Python Playground
+# Note Taking App
+> Python Playground
 
 ## How to Start
+Optional: Setup a virtual environment.
 
 ### Unix
 ```bash
