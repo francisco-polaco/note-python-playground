@@ -1,2 +1,2 @@
 @echo off
-del /F /Q var/
+del /F /Q var
