@@ -1,30 +1,16 @@
-from flask import Flask, request, json, Response
+from flask import Flask, request, json, Response, Blueprint
+from flask_restx import Api, Resource, fields
 
 import src.data.database as db
 from src.data.model import Note
 
 app = Flask(__name__)
+blueprint = Blueprint('api', __name__, url_prefix='/docs')
+api = Api(app=app, version='1.0', title='Note Taking App', description='Python playground', blueprint=blueprint,
+          doc='/docs')
+app.register_blueprint(blueprint)
 
-
-@app.route('/api/list')
-def list_notes():
-    limit_parameter = request.args.get('limit')
-
-    if limit_parameter is not None:
-        try:
-            limit = int(limit_parameter)
-        except ValueError:
-            # throw 400 if limit is not an int.
-            return "'limit' parameter should be an integer!", 400
-    else:
-        limit = 5
-
-    notes = db.list_notes(limit)
-
-    if notes is None or notes == []:
-        return f"There aren't any notes.", 404
-    else:
-        return buildListResult(notes)
+ns = api.namespace('Note', description='Note APIs')
 
 
 def buildListResult(notes: list):
@@ -34,6 +20,36 @@ def buildListResult(notes: list):
     return Response(response=json.dumps(final_notes),
                     status=200,
                     mimetype="application/json")
+
+
+@api.route('/api/list')
+class ListNotes(Resource):
+    """Shows a list of all notes"""
+
+    @ns.doc('list_notes')
+    # @ns.marshal_list_with(Note)
+    @ns.response(200, "List of notes.")
+    @ns.response(400, "'limit' parameter should be an integer.")
+    @ns.response(404, "Notes not found.")
+    @ns.param(name='limit', description='The maximum number of elements to return')
+    def get(self):
+        limit_parameter = request.args.get('limit')
+
+        if limit_parameter is not None:
+            try:
+                limit = int(limit_parameter)
+            except ValueError:
+                # throw 400 if limit is not an int.
+                return "'limit' parameter should be an integer!", 400
+        else:
+            limit = 5
+
+        notes = db.list_notes(limit)
+
+        if notes is None or notes == []:
+            return f"There aren't any notes.", 404
+        else:
+            return buildListResult(notes)
 
 
 @app.route('/api/get')
@@ -71,3 +87,7 @@ def store_note():
     note = Note(**payload)
     db.store_note(note)
     return 'OK', 200
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8080)
