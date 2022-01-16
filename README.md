@@ -1,5 +1,7 @@
 # Note Taking App
 > Python Playground
+## REST API
+Visit `http://localhost:8080/docs` to see a detailed REST API description.
 
 ## How to
 Optional: Setup a virtual environment.
