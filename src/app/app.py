@@ -19,7 +19,21 @@ def list_notes():
     else:
         limit = 5
 
-    return str(db.list_notes(limit))
+    notes = db.list_notes(limit)
+
+    if notes is None or notes == []:
+        return f"There aren't any notes.", 404
+    else:
+        return buildListResult(notes)
+
+
+def buildListResult(notes: list):
+    final_notes = []
+    for note in notes:
+        final_notes += [note.to_dict()]
+    return Response(response=json.dumps(final_notes),
+                    status=200,
+                    mimetype="application/json")
 
 
 @app.route('/api/get')
