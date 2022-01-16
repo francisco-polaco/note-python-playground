@@ -31,7 +31,7 @@ class ListNotes(Resource):
     @ns.response(200, "List of notes.")
     @ns.response(400, "'limit' parameter should be an integer.")
     @ns.response(404, "Notes not found.")
-    @ns.param(name='limit', description='The maximum number of elements to return')
+    @ns.param(name='limit', description='The maximum number of elements to return.')
     def get(self):
         limit_parameter = request.args.get('limit')
 
@@ -52,41 +52,65 @@ class ListNotes(Resource):
             return buildListResult(notes)
 
 
-@app.route('/api/get')
-def get_note():
-    id_parameter = request.args.get('id')
-    if id_parameter is None or id_parameter == "":
-        return "'id' parameter should not be empty!", 400
+@api.route('/api/get')
+class GetNote(Resource):
+    """Gets a note"""
 
-    note = db.get_note(id_parameter)
+    @ns.doc('get_note')
+    # @ns.marshal_list_with(Note)
+    @ns.response(200, "The note.")
+    @ns.response(400, "'id' parameter should not be empty.")
+    @ns.response(404, "Note not found.")
+    @ns.param(name='id', description='The note id to retrieve.')
+    def get(self):
+        id_parameter = request.args.get('id')
+        if id_parameter is None or id_parameter == "":
+            return "'id' parameter should not be empty!", 400
 
-    if note is None:
-        return f"Note with id '{id_parameter}' not found.", 404
-    else:
-        return Response(response=json.dumps(note.to_dict()),
-                        status=200,
-                        mimetype="application/json")
+        note = db.get_note(id_parameter)
+
+        if note is None:
+            return f"Note with id '{id_parameter}' not found.", 404
+        else:
+            return Response(response=json.dumps(note.to_dict()),
+                            status=200,
+                            mimetype="application/json")
 
 
-@app.route('/api/delete')
-def delete_note():
-    id_parameter = request.args.get('id')
-    if id_parameter is None or id_parameter == "":
-        return "'id' parameter should not be empty!", 400
+@api.route('/api/delete')
+class DeleteNote(Resource):
+    """Deletes a note"""
 
-    db.delete_note(id_parameter)
-    return 'OK', 200
+    @ns.doc('delete_note')
+    # @ns.marshal_list_with(Note)
+    @ns.response(200, "Success")
+    @ns.response(400, "'id' parameter should not be empty.")
+    @ns.param(name='id', description='The note id to delete.')
+    def get(self):
+        id_parameter = request.args.get('id')
+        if id_parameter is None or id_parameter == "":
+            return "'id' parameter should not be empty!", 400
+
+        db.delete_note(id_parameter)
+        return 'OK', 200
 
 
-@app.route('/api/save', methods=['POST'])
-def store_note():
-    payload = request.get_json()
-    if payload is None or payload == {}:
-        return "'payload' should not be empty!", 400
+@api.route('/api/save')
+class SaveNote(Resource):
+    """Saves a note"""
 
-    note = Note(**payload)
-    db.store_note(note)
-    return 'OK', 200
+    @ns.doc('save_note')
+    # @ns.marshal_list_with(Note)
+    @ns.response(200, "Success")
+    @ns.response(400, "Request body is empty.")
+    def post(self):
+        payload = request.get_json()
+        if payload is None or payload == {}:
+            return "'payload' should not be empty!", 400
+
+        note = Note(**payload)
+        db.store_note(note)
+        return 'OK', 200
 
 
 if __name__ == '__main__':
