@@ -7,10 +7,16 @@ from src.data.model import Note
 app = Flask(__name__)
 blueprint = Blueprint('api', __name__, url_prefix='/docs')
 api = Api(app=app, version='1.0', title='Note Taking App', description='Python playground', blueprint=blueprint,
-          doc='/docs')
+          doc='/docs', default_label='Note Taking Namespace', default='note-taking')
 app.register_blueprint(blueprint)
 
 ns = api.namespace('Note', description='Note APIs')
+
+model = api.model('Note', {
+    'note_id': fields.String(required=True, description="ID of the note.", help="Cannot be blank."),
+    'timestamp': fields.Integer(description="Note's timestamp.", help="UNIX epoch."),
+    'content': fields.String(description="The actual note.")
+})
 
 
 def buildListResult(notes: list):
@@ -27,7 +33,8 @@ class ListNotes(Resource):
     """Shows a list of all notes"""
 
     @ns.doc('list_notes')
-    # @ns.marshal_list_with(Note)
+    # FIXME: auto marshal
+    # @ns.marshal_list_with(model)
     @ns.response(200, "List of notes.")
     @ns.response(400, "'limit' parameter should be an integer.")
     @ns.response(404, "Notes not found.")
@@ -57,7 +64,8 @@ class GetNote(Resource):
     """Gets a note"""
 
     @ns.doc('get_note')
-    # @ns.marshal_list_with(Note)
+    # FIXME: auto marshal
+    # @ns.marshal_with(model)
     @ns.response(200, "The note.")
     @ns.response(400, "'id' parameter should not be empty.")
     @ns.response(404, "Note not found.")
@@ -82,7 +90,6 @@ class DeleteNote(Resource):
     """Deletes a note"""
 
     @ns.doc('delete_note')
-    # @ns.marshal_list_with(Note)
     @ns.response(200, "Success")
     @ns.response(400, "'id' parameter should not be empty.")
     @ns.param(name='id', description='The note id to delete.')
@@ -100,7 +107,7 @@ class SaveNote(Resource):
     """Saves a note"""
 
     @ns.doc('save_note')
-    # @ns.marshal_list_with(Note)
+    @ns.expect(model)
     @ns.response(200, "Success")
     @ns.response(400, "Request body is empty.")
     def post(self):
