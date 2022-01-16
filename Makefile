@@ -14,3 +14,6 @@ lint:
 
 test:
 	pytest
+
+doc:
+	openapi/generate.sh
