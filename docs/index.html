@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.24.2/swagger-ui.css" >
+  <style>
+    html
+    {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after
+    {
+      box-sizing: inherit;
+    }
+
+    body {
+      margin:0;
+      background: #fafafa;
+    }
+  </style>
+</head>
+<body>
+
+<div id="swagger-ui"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.24.2/swagger-ui-bundle.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.24.2/swagger-ui-standalone-preset.js"> </script>
+<script>
+window.onload = function() {
+
+  var spec = {"swagger": "2.0", "basePath": "/", "paths": {"/api/delete": {"get": {"responses": {"400": {"description": "'id' parameter should not be empty."}, "200": {"description": "Success"}}, "operationId": "delete_note", "parameters": [{"in": "query", "description": "The note id to delete.", "name": "id", "type": "string"}], "tags": ["note-taking"]}}, "/api/get": {"get": {"responses": {"404": {"description": "Note not found."}, "400": {"description": "'id' parameter should not be empty."}, "200": {"description": "The note."}}, "operationId": "get_note", "parameters": [{"in": "query", "description": "The note id to retrieve.", "name": "id", "type": "string"}], "tags": ["note-taking"]}}, "/api/list": {"get": {"responses": {"404": {"description": "Notes not found."}, "400": {"description": "'limit' parameter should be an integer."}, "200": {"description": "List of notes."}}, "operationId": "list_notes", "parameters": [{"in": "query", "description": "The maximum number of elements to return.", "name": "limit", "type": "string"}], "tags": ["note-taking"]}}, "/api/save": {"post": {"responses": {"400": {"description": "Request body is empty."}, "200": {"description": "Success"}}, "operationId": "save_note", "parameters": [{"name": "payload", "required": true, "in": "body", "schema": {"$ref": "#/definitions/Note"}}], "tags": ["note-taking"]}}}, "info": {"title": "Note Taking App", "version": "1.0", "description": "Python playground"}, "produces": ["application/json"], "consumes": ["application/json"], "tags": [{"name": "note-taking", "description": "Note Taking Namespace"}], "definitions": {"Note": {"required": ["note_id"], "properties": {"note_id": {"type": "string", "description": "ID of the note."}, "timestamp": {"type": "integer", "description": "Note's timestamp."}, "content": {"type": "string", "description": "The actual note."}}, "type": "object"}}, "responses": {"ParseError": {"description": "When a mask can't be parsed"}, "MaskError": {"description": "When any error occurs on mask"}}};
+
+  // Build a system
+  const ui = SwaggerUIBundle({
+    spec: spec,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  })
+
+  window.ui = ui
+}
+</script>
+</body>
+
+</html>

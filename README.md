@@ -1,7 +1,9 @@
 # Note Taking App
 > Python Playground
 ## REST API
-Visit `http://localhost:8080/docs` to see a detailed REST API description.
+Visit `http://localhost:8080/docs` 
+or the [generated site](https://francisco-polaco.github.io/note-python-playground/)
+to see a detailed REST API description.
 
 ## How to
 Optional: Setup a virtual environment.
