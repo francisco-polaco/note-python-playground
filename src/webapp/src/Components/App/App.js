@@ -2,9 +2,9 @@ import logo from './../../logo.svg';
 import './App.css';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import { Button, Paper } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import NoteList from './../NoteList/NoteList';
+import NoteCreator from './../NoteCreator/NoteCreator';
 
 function App() {
   return (
@@ -14,13 +14,8 @@ function App() {
         <Typography variant="h4" component="h1" gutterBottom>
           Create React App + Material-UI
         </Typography>
-        <Button variant="contained" color="primary">
-          Primary Button
-        </Button>
-        <Button variant="contained" color="secondary">
-          Secondary Button
-        </Button>
-        <NoteList></NoteList>
+        <NoteCreator/>
+        <NoteList/>
       </Paper>
     </Container>
   );

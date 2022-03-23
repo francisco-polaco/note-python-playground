@@ -24,6 +24,7 @@ if os.environ['FLASK_ENV'] == 'development':
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 else:
     cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def buildListResult(notes: list):
     final_notes = []
@@ -60,7 +61,7 @@ class ListNotes(Resource):
         notes = db.list_notes(limit)
 
         if notes is None or notes == []:
-            return f"There aren't any notes.", 404
+            return [], 404
         else:
             return buildListResult(notes)
 
