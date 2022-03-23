@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Button, Paper } from '@material-ui/core';
+import NoteList from './../NoteList/NoteList';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Button variant="contained" color="secondary">
           Secondary Button
         </Button>
+        <NoteList></NoteList>
       </Paper>
     </Container>
   );
