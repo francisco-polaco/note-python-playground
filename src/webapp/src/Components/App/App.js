@@ -8,14 +8,16 @@ import NoteCreator from './../NoteCreator/NoteCreator';
 
 function App() {
   return (
-    <Container maxWidth="sm" className="App">
+    <Container maxWidth="lg" className="App">
       <Paper>
         <img src={logo} className="App-logo" alt="logo" />
         <Typography variant="h4" component="h1" gutterBottom>
-          Create React App + Material-UI
+          The Best Note Taking App!
         </Typography>
-        <NoteCreator/>
-        <NoteList/>
+        <div>
+          <NoteCreator/>
+          <NoteList/>
+        </div>
       </Paper>
     </Container>
   );
