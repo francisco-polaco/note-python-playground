@@ -2,8 +2,14 @@
 run:
 	FLASK_APP=src/app/app.py FLASK_ENV=development python3 -m flask run --port=8080
 
+webapp:
+	cd src/webapp && npm start && cd ../..
+
 install:
 	pip install -r requirements.txt
+
+install-webapp:
+	cd src/webapp && npm install && cd ../..
 
 clean-env:
 	rm -rf var/*
