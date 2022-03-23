@@ -1,6 +1,7 @@
 from flask import Flask, request, json, Response, Blueprint
 from flask_restx import Api, Resource, fields
-
+from flask_cors import CORS
+import os
 import src.data.database as db
 from src.data.model import Note
 
@@ -18,6 +19,11 @@ model = api.model('Note', {
     'content': fields.String(description="The actual note.")
 })
 
+
+if os.environ['FLASK_ENV'] == 'development':
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+else:
+    cors = CORS(app)
 
 def buildListResult(notes: list):
     final_notes = []
