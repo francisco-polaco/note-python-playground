@@ -1,6 +1,7 @@
 from flask import Flask, request, json, Response, Blueprint
 from flask_restx import Api, Resource, fields
-
+from flask_cors import CORS
+import os
 import src.data.database as db
 from src.data.model import Note
 
@@ -18,6 +19,12 @@ model = api.model('Note', {
     'content': fields.String(description="The actual note.")
 })
 
+
+if os.environ['FLASK_ENV'] == 'development':
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+else:
+    cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def buildListResult(notes: list):
     final_notes = []
@@ -54,7 +61,7 @@ class ListNotes(Resource):
         notes = db.list_notes(limit)
 
         if notes is None or notes == []:
-            return f"There aren't any notes.", 404
+            return [], 404
         else:
             return buildListResult(notes)
 
