@@ -58,6 +58,7 @@ class NoteCreator extends React.Component {
             required
             id="note-content"
             label="Note"
+            size="small"
             onChange={(event) => {
               this.setState({
                 text: event.target.value
