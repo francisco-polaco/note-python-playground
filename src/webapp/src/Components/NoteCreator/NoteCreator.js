@@ -6,18 +6,21 @@ import Paper from '@mui/material/Paper';
 import Container from '@material-ui/core/Container';
 import { v4 as uuidv4 } from 'uuid';
 
-const note = 'I roll all day in lava!';
-
 class NoteCreator extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
         success: null,
-        text: note,
+        text: '',
       };
     }
 
     createNote() {
+
+      if (this.state.text === '') {
+        return;
+      }
+
       const recipeUrl = 'http://localhost:8080/api/save';
       const postBody = {
           note_id: uuidv4(),
@@ -59,6 +62,7 @@ class NoteCreator extends React.Component {
             id="note-content"
             label="Note"
             size="small"
+            value={this.state.text}
             onChange={(event) => {
               this.setState({
                 text: event.target.value
@@ -68,6 +72,10 @@ class NoteCreator extends React.Component {
           <Button variant="contained" color="primary" endIcon={<SendIcon />}
             onClick={() => {
               this.createNote();
+              this.props.onNoteCreation();
+              this.setState({
+                text: ''
+              });
           }}>
             Create Note
           </Button>

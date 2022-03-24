@@ -69,6 +69,8 @@ class NoteList extends React.Component {
     }
 
     render() {
+      //const { changesDone } = this.props.changesDone;
+      //console.log(changesDone);
       const { error, isLoaded } = this.state;
       if (error) {
         return <div>Error: {error.message}</div>;
@@ -77,6 +79,8 @@ class NoteList extends React.Component {
       } else {
         return this.datagrid();
       }
+
+      // this.props.changesDone = false;
     }
 
     datagrid() {
@@ -98,7 +102,7 @@ class NoteList extends React.Component {
       ));
 
       return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 400, width: '100%', marginTop: '.5rem' }}>
           <Button variant="contained" color="secondary" startIcon={<RefreshIcon />} onClick={() => {
                 this.updateNotes();
             }}>

@@ -56,7 +56,7 @@ class ListNotes(Resource):
                 # throw 400 if limit is not an int.
                 return "'limit' parameter should be an integer!", 400
         else:
-            limit = 5
+            limit = 50
 
         notes = db.list_notes(limit)
 
