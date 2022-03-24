@@ -10,9 +10,6 @@ import NoteCreator from './../NoteCreator/NoteCreator';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      changesDone: false
-    };
   }
 
   render() {
@@ -24,12 +21,8 @@ class App extends React.Component {
             The Best Note Taking App!
           </Typography>
           <div>
-            <NoteCreator onNoteCreation={() => {
-              this.setState({
-                changesDone: true
-              });
-            }} />
-            <NoteList changesDone={() => this.state.changesDone}/>
+            <NoteCreator/>
+            <NoteList/>
           </div>
         </Paper>
       </Container>

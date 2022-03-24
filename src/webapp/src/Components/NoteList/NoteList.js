@@ -69,8 +69,6 @@ class NoteList extends React.Component {
     }
 
     render() {
-      //const { changesDone } = this.props.changesDone;
-      //console.log(changesDone);
       const { error, isLoaded } = this.state;
       if (error) {
         return <div>Error: {error.message}</div>;
@@ -79,8 +77,6 @@ class NoteList extends React.Component {
       } else {
         return this.datagrid();
       }
-
-      // this.props.changesDone = false;
     }
 
     datagrid() {

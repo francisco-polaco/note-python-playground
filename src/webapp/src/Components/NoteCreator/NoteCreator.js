@@ -72,7 +72,6 @@ class NoteCreator extends React.Component {
           <Button variant="contained" color="primary" endIcon={<SendIcon />}
             onClick={() => {
               this.createNote();
-              this.props.onNoteCreation();
               this.setState({
                 text: ''
               });
