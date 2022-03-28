@@ -42,6 +42,7 @@ class NoteCreator extends React.Component {
             this.setState({
               success: true
             });
+            this.props.onNoteAdd();
           },
           // Note: it's important to handle errors here
           // instead of a catch() block so that we don't swallow
@@ -50,6 +51,7 @@ class NoteCreator extends React.Component {
             this.setState({
               success: false
             });
+            this.props.onNoteAdd();
           }
         )
     }
