@@ -98,7 +98,7 @@ class NoteList extends React.Component {
       ));
 
       return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 400, width: '100%', marginTop: '.5rem' }}>
           <Button variant="contained" color="secondary" startIcon={<RefreshIcon />} onClick={() => {
                 this.updateNotes();
             }}>
