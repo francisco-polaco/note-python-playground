@@ -8,37 +8,8 @@ class NoteList extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        error: null,
-        isLoaded: false,
-        notes: [],
         selected: []
       };
-    }
-
-    componentDidMount() {
-        this.updateNotes();
-    }
-
-    updateNotes() {
-        fetch("http://localhost:8080/api/list")
-            .then(res => res.json())
-            .then(
-              (result) => {
-                this.setState({
-                  isLoaded: true,
-                  notes: result
-                });
-              },
-              // Note: it's important to handle errors here
-              // instead of a catch() block so that we don't swallow
-              // exceptions from actual bugs in components.
-              (error) => {
-                this.setState({
-                  isLoaded: true,
-                  error
-                });
-              }
-            )
     }
 
     deleteNotes() {
@@ -49,7 +20,7 @@ class NoteList extends React.Component {
         .then(res => res.json())
         .then(
           (result) => {
-            this.setState({
+            this.props.onNoteDeletion({
               isLoaded: true
             });
           },
@@ -57,19 +28,17 @@ class NoteList extends React.Component {
           // instead of a catch() block so that we don't swallow
           // exceptions from actual bugs in components.
           (error) => {
-            this.setState({
+            this.props.onNoteDeletion({
               isLoaded: true,
               error
             });
           }
         )
       });
-
-      this.updateNotes();
     }
 
     render() {
-      const { error, isLoaded } = this.state;
+      const { error, isLoaded } = this.props;
       if (error) {
         return <div>Error: {error.message}</div>;
       } else if (!isLoaded) {
@@ -86,7 +55,7 @@ class NoteList extends React.Component {
         { field: 'content', headerName: 'Note', flex: 1 }
       ];
 
-      const { notes } = this.state;
+      const { notes } = this.props;
 
       const notes_to_table = notes.map((note) => (
         {
